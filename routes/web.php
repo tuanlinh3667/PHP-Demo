@@ -11,18 +11,10 @@
 |
 */
 
-Route::get('/home', function () {
-    return "Welcome home";
-});
-
-Route::get('/login', function () {
-    return "Login Form";
-});
-
-Route::get('/register', function () {
-    return "Register Form";
-});
-
-Route::get('/about', function () {
-    return "Welcome About";
-});
+Route::get('/admin/bakery/list', 'BakeryController@index');
+Route::get('/admin/bakery/show', 'BakeryController@show');
+Route::get('/admin/bakery/create', 'BakeryController@create');
+Route::post('/admin/bakery/store', 'BakeryController@store');
+Route::get('/admin/bakery/edit/{id}', 'BakeryController@edit');
+Route::post('/admin/bakery/update', 'BakeryController@update');
+Route::post('/admin/bakery/destroy', 'BakeryController@destroy');

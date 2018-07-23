@@ -17,4 +17,5 @@ Route::get('/admin/bakery/create', 'BakeryController@create');
 Route::post('/admin/bakery/store', 'BakeryController@store');
 Route::get('/admin/bakery/edit/{id}', 'BakeryController@edit');
 Route::post('/admin/bakery/update', 'BakeryController@update');
-Route::post('/admin/bakery/destroy', 'BakeryController@destroy');
+Route::get('/admin/bakery/delete/{id}', 'BakeryController@delete');
+Route::post('/admin/bakery/destroy/{id}', 'BakeryController@destroy');

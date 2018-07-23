@@ -10,78 +10,98 @@ namespace App\Http\Controllers;
 
 
 use App\Bakery;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class BakeryController extends Controller
 {
     // trả về danh sách bánh.
-    public function index() {
-        $bakeries = DB::select('select * from bakeries');
-        return view('admin.bakery.list') -> with('bakeries_in_view', $bakeries);
+    public function index()
+    {
+        $bakeries = Bakery::all();
+        return view('admin.bakery.list')->with('bakeries_in_view', $bakeries);
     }
 
     // show một sản phẩm.
-    public function show(){
+    public function show()
+    {
         return 'show';
     }
 
     // trả về form.
-    public function create(){
+    public function create()
+    {
         $bakery = new Bakery();
         $action = '/admin/bakery/store';
-        return view('admin.bakery.form') -> with('bakery', $bakery) -> with('action', $action);
+        return view('admin.bakery.form')
+            ->with('bakery', $bakery)
+            ->with('action', $action);
     }
 
     // lưu thông tin sản phẩm vào db.
-    public function store(Request $request){
-        $name = $request -> input('name');
-        $categoryId = $request -> input('categoryId');
-        $price = $request -> input('price');
-        $description = $request -> input('description');
-        $image = $request -> input('image');
-        $detail = $request -> input('detail');
-        $note = $request -> input('note');
-        DB::insert('insert into bakeries (name, categoryId, price, description, image, detail, note) values (?,?,?,?,?,?,?)'
-            , [$name, $categoryId, $price, $description, $image, $detail, $note]);
-        return 'Saved success!';
+    public function store()
+    {
+        $bakery = new Bakery();
+        $bakery->name = Input::get('name');
+        $bakery->categoryId = Input::get('categoryId');
+        $bakery->price = Input::get('price');
+        $bakery->description = Input::get('description');
+        $bakery->images = Input::get('images');
+        $bakery->content = Input::get('content');
+        $bakery->note = Input::get('note');
+        $bakery->save();
+        return redirect('/admin/bakery/list');
     }
 
     // lấy thông tin sản phẩm cần sửa, đưa về form.
-    public function edit($id){
+    public function edit($id)
+    {
         $action = '/admin/bakery/update';
-        $bakery = DB::selectOne('select * from bakeries where id = ?', [$id]);
-        if($bakery == null){
+        $bakery = Bakery::find($id);
+        if ($bakery == null) {
             return view('404');
         }
         return view('admin.bakery.form')
-            -> with('bakery', $bakery)
-            -> with('action', $action);
+            ->with('bakery', $bakery)
+            ->with('action', $action);
     }
 
     // lưu thông tin mới của sản phẩm vào db.
-    public function update(Request $request){
-        $id = $request -> input('id');
-        $bakery = DB::selectOne('select * from bakeries where id = ?', [$id]);
-        if($bakery == null){
+    public function update()
+    {
+        $id = Input::get('id');
+        $bakery = Bakery::find($id);
+        if ($bakery == null) {
             return view('404');
         }
-        $name = $request -> input('name');
-        $categoryId = $request -> input('categoryId');
-        $price = $request -> input('price');
-        $description = $request -> input('description');
-        $image = $request -> input('image');
-        $detail = $request -> input('detail');
-        $note = $request -> input('note');
-        DB::update('update bakeries set name = ?, categoryId = ?, price = ?, description = ?, image = ?, detail = ?, note = ? where id = ?'
-            , [$name, $categoryId, $price, $description, $image, $detail, $note, $id]);
-        return 'update';
+        $bakery->name = Input::get('name');
+        $bakery->categoryId = Input::get('categoryId');
+        $bakery->price = Input::get('price');
+        $bakery->description = Input::get('description');
+        $bakery->images = Input::get('images');
+        $bakery->content = Input::get('content');
+        $bakery->note = Input::get('note');
+        $bakery->save();
+        return redirect('/admin/bakery/list');
     }
 
     // xoá sản phẩm.
-    public function destroy(){
-        return 'destroy';
+    public function delete($id)
+    {
+        $bakery = Bakery::find($id);
+        if ($bakery == null) {
+            return view('404');
+        }
+        return view('admin.bakery.confirm_delete')->with('bakery', $bakery);
     }
 
-
+    // xoá sản phẩm.
+    public function destroy($id)
+    {
+        $bakery = Bakery::find($id);
+        if ($bakery == null) {
+            return view('404');
+        }
+        $bakery->delete();
+        return redirect('/admin/bakery/list');
+    }
 }

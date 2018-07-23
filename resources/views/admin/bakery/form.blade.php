@@ -9,6 +9,14 @@
 </head>
 <body>
     <h1>Create New Bakery</h1>
+    <ul>
+        <li>
+            <a href="/admin/bakery/create">Create New</a>
+        </li>
+        <li>
+            <a href="/admin/bakery/list">List Bakery</a>
+        </li>
+    </ul>
     <form action="{{$action}}" method="post">
         {{csrf_field()}}
         <input type="hidden" name="id" value="{{$bakery -> id}}">
@@ -34,11 +42,11 @@
         </div>
         <div>
             <label>Image</label>
-            <input type="text" name="image" value="{{$bakery -> image}}">
+            <input type="text" name="images" value="{{$bakery -> images}}">
         </div>
         <div>
             <label>Detail</label>
-            <textarea name="detail" cols="30" rows="10">{{$bakery -> detail}}</textarea>
+            <textarea name="content" cols="30" rows="10">{{$bakery -> content}}</textarea>
         </div>
         <div>
             <label>Note</label>

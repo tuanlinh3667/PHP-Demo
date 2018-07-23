@@ -19,3 +19,9 @@ Route::get('/admin/bakery/edit/{id}', 'BakeryController@edit');
 Route::post('/admin/bakery/update', 'BakeryController@update');
 Route::get('/admin/bakery/delete/{id}', 'BakeryController@delete');
 Route::post('/admin/bakery/destroy/{id}', 'BakeryController@destroy');
+
+Route::resource('admin/category', 'CategoryController');
+Route::resource('admin/collection', 'CollectionController');
+Route::resource('admin/article', 'ArticleController');
+
+
